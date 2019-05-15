@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <title>ShareSport</title>
+
+
+      <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
+    />
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  </head>
+  <body>
+    <!-- Our application root element -->
+    <div id="app">
+      <b-container>
+        <b-jumbotron bg-variant="primary" text-variant="white" border-variant="dark" header="Create match">
+
+        </b-jumbotron>
+
+    <b-container>
+    <br>
+    </b-container>
+
+        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+
+          <input type="radio" id="type" value="single" v-model="form.type" checked>
+            <label for="single">Single</label>
+            <input type="radio" id="type" value="double" v-model="form.type">
+            <label for="double">Double</label>
+
+          <b-form-group id="group-date" label="Date:" label-for="date">
+          <input
+            id="date"
+            v-model="form.date"
+            type="date"
+            required
+          ></input>
+          <input
+            id="time"
+            v-model="form.time"
+            type="time"
+            required
+          ></input>
+
+          <br><br>
+        <b-button v-b-toggle.collapse-1 variant="primary">Location</b-button>
+        <b-collapse id="collapse-1" class="mt-2">
+          <b-card>
+
+            <b-form-group id="group-city" label="City:" label-for="city">
+            <b-form-input
+              id="city"
+              v-model="form.city"
+              required
+            ></b-form-input>
+            <b-form-group id="group-court" label="Court:" label-for="court">
+            <b-form-input
+              id="input-pista"
+              v-model="form.pista"
+              required
+            ></b-form-input>
+            <b-form-group id="group-club" label="Club" label-for="club">
+            <b-form-input
+              id="club"
+              v-model="form.club"
+            ></b-form-input>
+
+
+          </b-card>
+        </b-collapse>
+        <br>
+        <br>
+      <b-button v-b-toggle.collapse-2 variant="primary">Players</b-button>
+        <b-collapse id="collapse-2" class="mt-2">
+          <b-card>
+
+            <b-form-group id="team1" label="Team 1:" label-for="team1">
+            <input
+              id="player1"
+              v-model="form.player1"
+              placeholder="Player 1 username"
+              required
+            ></input>
+            <input
+              id="player2"
+              v-model="form.player2"
+            ></input>
+            <br><br>
+            <b-form-group id="team2" label="Team 2:" label-for="team2">
+            <input
+              id="player3"
+              v-model="form.player3"
+              required
+            ></input>
+            <input
+              id="player4"
+              v-model="form.player4"
+            ></input>
+          </b-card>
+        </b-collapse>
+      <br>
+      <br>
+      <b-button v-b-toggle.collapse-3 variant="primary">Score</b-button>
+        <b-collapse id="collapse-3" class="mt-2">
+          <b-card>
+
+            <b-form-group id="group-set1" label="Set 1:" label-for="set1">
+            <input
+              id="set11"
+              v-model="form.set11"
+              >
+            </input>
+            <input
+              id="set12"
+              v-model="form.set12"
+              >
+            </input>
+            <b-form-group id="group-set2" label="Set 2:" label-for="set2">
+              <input
+                id="set21"
+                v-model="form.set21"
+                >
+              </input>
+              <input
+                id="set22"
+                v-model="form.set22"
+                >
+              </input>
+            <b-form-group id="group-set3" label="Set 3:" label-for="set3">
+              <input
+                id="set21"
+                v-model="form.set31">
+              </input>
+              <input
+                id="set22"
+                v-model="form.set32">
+              </input>
+          </b-card>
+        </b-collapse>
+        <br>
+        <br>
+          <b-button type="submit" variant="primary">Submit</b-button>
+          <b-button type="reset" variant="danger">Reset</b-button>
+        </b-form>
+        <br>
+
+      </b-container>
+    </div>
+  <!-- Start running your app -->
+    <script>
+
+
+      window.app  = new Vue({
+        el: '#app',
+        data: {
+          form: {
+          location:{},
+          players: [],
+          sets1:[],
+          sets2:[],
+          type:'',
+        },
+          show: true
+        },
+        computed: {
+          showAlert() {
+            return this.users.length > 0 ? true : false
+          }
+        },
+
+        methods: {
+          onSubmit(evt) {
+
+            evt.preventDefault()
+            //this.users.push(JSON.stringify(this.form, null, 4))
+            this.type = this.form.type
+            this.location = {city:this.form.city, court:this.form.court, club:this.form.club}
+            if (this.form.type === "single")
+              this.players = [this.form.player1, this.form.player3]
+            else this.players = [this.form.player1, this.form.player2,
+              this.form.player3, this.form.player4]
+            this.sets1 = [this.form.set11, this.form.set21, this.form.set31]
+            this.sets2 = [this.form.set12, this.form.set22, this.form.set32]
+
+            console.log(this.location)
+            console.log(this.players)
+            console.log(this.sets1)
+            console.log(this.sets2)
+            console.log(this.type)
+            console.log(this.form.date)
+            let date = this.form.date + " " + this.form.time
+            date = new Date(date)
+            console.log(date)
+
+            let client = axios.create({
+              baseURL: 'http://localhost:8000/',
+              timeout: 1000,
+            })
+
+
+            client.post("/matches",
+              { "date": date,
+                "location": this.location,
+                "type":this.type,
+                "players":this.players,
+                "score":{"local":this.sets1,"visit":this.sets2}})
+              .then(response => console.log(response.data))
+              .catch(error => console.log(error))
+
+
+            this.form.city = ''
+            this.form.club = ''
+            this.form.court = ''
+            this.form.player1 = ''
+            this.form.player2 = ''
+            this.form.player3 = ''
+            this.form.player4 = ''
+            this.form.set11 = ''
+            this.form.set21 = ''
+            this.form.set31 = ''
+            this.form.set12 = ''
+            this.form.set22 = ''
+            this.form.set32 = ''
+
+
+            this.show = false
+            this.$nextTick(() => {
+              this.show = true
+            })
+          },
+          onReset(evt) {
+            evt.preventDefault()
+            // Reset our form values
+
+            this.form.city = ''
+            this.form.club = ''
+            this.form.court = ''
+            this.form.player1 = ''
+            this.form.player2 = ''
+            this.form.player3 = ''
+            this.form.player4 = ''
+            this.form.set11 = ''
+            this.form.set21 = ''
+            this.form.set31 = ''
+            this.form.set12 = ''
+            this.form.set22 = ''
+            this.form.set32 = ''
+
+
+            // Trick to reset/clear native browser form validation state
+            this.show = false
+            this.$nextTick(() => {
+              this.show = true
+            })
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

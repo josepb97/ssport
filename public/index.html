@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <title>My first BootstrapVue app</title>
+
+     
+      <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
+    /> 
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <b-jumbotron bg-variant="primary" text-variant="white" border-variant="dark" header="Share Sport">
+      </b-jumbotron>
+      <center>
+        <b-button href="formUser.html">Sign Up</b-button>
+        <br>
+        <br>
+        <b-button href="showUsers.html">Show Users</b-button>
+        <br>
+        <br>
+        <b-button href="formMatch.html">Create Match</b-button>
+        <br>
+        <br>
+        <b-button href="showMatches.html">Show Matches</b-button>
+      </center>
+    
+  </div>
+   <script>
+
+     
+      window.app  = new Vue({
+        el: '#app',
+        show: true
+        })
+      </script>
+  </body>
+</html>

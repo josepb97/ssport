@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <title>My first BootstrapVue app</title>
+
+     
+      <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
+    /> 
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  </head>
+  <body>
+
+  <div id="app">
+    <b-jumbotron bg-variant="primary" text-variant="white" border-variant="dark" header="Partidos en el sistema">
+
+        </b-jumbotron>
+  <b-table striped show-empty :items="filtered">
+    <template slot="top-row" slot-scope="{ fields }">
+      <td v-for="field in fields" :key="field.key">
+        <input v-model="filters[field.key]" :placeholder="field.label">
+      </td>
+    </template>
+  </b-table>
+  </div>
+
+  <script>
+     
+      window.app  = new Vue({
+          el: '#app',
+          data: {
+            filters: {
+              id: '',
+              location: '',
+              ended: '',
+              type: '',
+              players: '',
+              score: '',
+            },
+            items: [],
+
+          },
+          created(){
+              var self = this
+              axios.get("http://localhost:8000/matches")
+                             .then(response => self.items = response.data.result)
+                             .catch(function (error) {
+                                 console.log(error);
+                             });
+               console.log(res)
+          },
+
+          computed: {
+            filtered () {
+                console.log(this.items)
+                let filtered =[]
+                if (this.items.length>0)
+                  filtered = this.items.filter(item => {
+                     return Object.keys(this.filters).every(key =>
+                        String(item[key]).includes(this.filters[key]))
+                  })
+
+               return filtered.length > 0 ? filtered : [{
+                    id: '',
+                    location: '',
+                    ended: '',
+                    type: '',
+                    players: '',
+                    score: '',
+                }]
+            }
+          }
+        })
+  </script>
+  </body>
+</html>
